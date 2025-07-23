@@ -1,22 +1,31 @@
 <?php
-session_start();
-require_once 'config.php';
-require_once 'functions.php';
 
-$input = [];
-$data = [];
+require_once 'bootstrap.php';
+
+
+
 
 $errors = [];
+$success_message = '';
 
 if (isset($_POST['add_new_category'])) {
-    if (empty($_POST['new_category_name'])) {
-        $errors[] = "New Category name is missing";
+    $validation_result =  validate_category_name($_POST['new_category_name']);
+    if (is_array($validation_result)) {
+        $errors = $validation_result;
     } else {
-        echo "Validation passed!";
-        $new_category_name = trim($_POST['new_category_name']);
-        $clean_new_category_name = strtolower(filter_var($new_category_name, FILTER_SANITIZE_SPECIAL_CHARS));
+        $clean_category_name = $validation_result;
+        try {
+            $sql = "INSERT INTO categories (category_name) VALUES (?)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$clean_category_name]);
+            $success_message = "Category added successfully!";
+        } catch (PDOException $e) {
+
+            die("Database error: Could not insert category.");
+        }
     }
 }
+
 ?>
 
 
@@ -30,6 +39,12 @@ if (!empty($errors)) {
     foreach ($errors as $error) {
         echo $error . "<br>";
     }
+    echo "</div>";
+}
+
+if (!empty($success_message)) {
+    echo "<div class= 'success-box'>";
+    echo $success_message;
     echo "</div>";
 }
 ?>
