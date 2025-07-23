@@ -21,6 +21,13 @@ if (isset($_POST['add_new_brand'])) {
 <?php
 require_once 'partials/header.php';
 
+if (!empty($errors)) {
+    echo "<div class='error-box'>";
+    foreach ($errors as $error) {
+        echo $error . "<br>";
+    }
+    echo "</div>";
+}
 
 ?>
 
