@@ -28,16 +28,20 @@ if (isset($_POST['add_new_category'])) {
         $errors = $validation_result;
     } else {
         $clean_category_name = $validation_result;
-        try {
-            $sql = "INSERT INTO categories (category_name) VALUES (?)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([$clean_category_name]);
-            $_SESSION['success_message'] = "The Category '{$clean_category_name}' has been added successfully!";
-            header("Location: categories.php");
-            exit;
-        } catch (PDOException $e) {
+        if (value_exist($pdo, 'categories', 'category_name', $clean_category_name)) {
+            $errors[] = "This Category already exists";
+        } else {
+            try {
+                $sql = "INSERT INTO categories (category_name) VALUES (?)";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$clean_category_name]);
+                $_SESSION['success_message'] = "The Category '{$clean_category_name}' has been added successfully!";
+                header("Location: categories.php");
+                exit;
+            } catch (PDOException $e) {
 
-            die("Database error: Could not insert category.");
+                die("Database error: Could not insert category.");
+            }
         }
     }
 }

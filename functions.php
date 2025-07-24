@@ -27,3 +27,22 @@ function validate($name, $type)
         return  preg_replace('/\s+/', ' ', $new_name);
     }
 }
+
+function value_exist($pdo, $table_name, $column_name, $value)
+{
+    $count = 0;
+    try {
+        $sql = "SELECT COUNT(*) FROM {$table_name} WHERE {$column_name} = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$value]);
+        $count = $stmt->fetchColumn();
+    } catch (PDOException $e) {
+        die("Database query failed in value_exist function: " . $e->getMessage());
+    }
+
+    if ($count > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}

@@ -30,15 +30,19 @@ if (isset($_POST['add_new_brand'])) {
         $errors = $validation_result;
     } else {
         $clean_brand_name = $validation_result;
-        try {
-            $sql = "INSERT INTO brands (brand_name) VALUES (?)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([$clean_brand_name]);
-            $_SESSION['success_message'] = "The Brand '{$clean_brand_name}' has been added successfully!";
-            header("Location: brands.php");
-            exit;
-        } catch (PDOException $e) {
-            die("Database error: Could not insert brand.");
+        if (value_exist($pdo, "brands", "brand_name", $clean_brand_name)) {
+            $errors[] = "This Brand already exists";
+        } else {
+            try {
+                $sql = "INSERT INTO brands (brand_name) VALUES (?)";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$clean_brand_name]);
+                $_SESSION['success_message'] = "The Brand '{$clean_brand_name}' has been added successfully!";
+                header("Location: brands.php");
+                exit;
+            } catch (PDOException $e) {
+                die("Database error: Could not insert brand.");
+            }
         }
     }
 }
