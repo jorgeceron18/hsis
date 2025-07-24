@@ -23,7 +23,7 @@ if (isset($_SESSION['success_message'])) {
 }
 
 if (isset($_POST['add_new_category'])) {
-    $validation_result =  validate($_POST['new_category_name'], "Category");
+    $validation_result =  validate($_POST['category_name'], "Category");
     if (is_array($validation_result)) {
         $errors = $validation_result;
     } else {
@@ -66,8 +66,8 @@ if (!empty($success_message)) {
 ?>
 
 <form action="categories.php" method="POST">
-    <label for="new_category_name">New Category Name:</label>
-    <input type="text" name="new_category_name" id="new_category_name"> <br>
+    <label for="category_name">New Category Name:</label>
+    <input type="text" name="category_name" id="category_name"> <br>
     <input type="submit" name="add_new_category" value="Add New Category"> <br>
 
 
@@ -76,11 +76,11 @@ if (!empty($success_message)) {
 
 <?php if (!empty($categories)): ?>
 
-    <h2>Existing Categories </h2>
+    <h2>Existing Categories: </h2>
     <table>
         <thead>
             <tr>
-                <th>Category Name</th>
+                <th>Category Name:</th>
             </tr>
         </thead>
         <tbody>

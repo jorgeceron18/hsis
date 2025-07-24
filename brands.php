@@ -25,7 +25,7 @@ if (isset($_SESSION['success_message'])) {
 }
 
 if (isset($_POST['add_new_brand'])) {
-    $validation_result = validate($_POST['new_brand_name'], "Brand");
+    $validation_result = validate($_POST['brand_name'], "Brand");
     if (is_array($validation_result)) {
         $errors = $validation_result;
     } else {
@@ -65,8 +65,8 @@ if (!empty($success_message)) {
 ?>
 
 <form action="brands.php" method="POST">
-    <label for="new_brand_name">New Brand Name:</label>
-    <input type="text" name="new_brand_name" id="new_brand_name"> <br>
+    <label for="brand_name">New Brand Name:</label>
+    <input type="text" name="brand_name" id="brand_name"> <br>
     <input type="submit" name="add_new_brand" value="Add New Brand"> <br>
 
 
@@ -76,11 +76,11 @@ if (!empty($success_message)) {
 
 <?php if (!empty($brands)): ?>
 
-    <h2>Existing Brands </h2>
+    <h2>Existing Brands: </h2>
     <table>
         <thead>
             <tr>
-                <th>Brand Name</th>
+                <th>Brand Name:</th>
             </tr>
         </thead>
         <tbody>
