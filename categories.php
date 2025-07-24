@@ -23,7 +23,7 @@ if (isset($_SESSION['success_message'])) {
 }
 
 if (isset($_POST['add_new_category'])) {
-    $validation_result =  validate_category_name($_POST['new_category_name']);
+    $validation_result =  validate($_POST['new_category_name'], "Category");
     if (is_array($validation_result)) {
         $errors = $validation_result;
     } else {
